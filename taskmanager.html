@@ -114,6 +114,172 @@
             font-weight: 700;
         }
 
+        /* Floating Info Button */
+        .info-fab {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(88, 166, 255, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .info-fab:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 12px 32px rgba(88, 166, 255, 0.6);
+        }
+
+        .info-fab i {
+            font-size: 1.5rem;
+            color: #fff;
+        }
+
+        .info-fab.hidden {
+            display: none;
+        }
+
+        /* Info Modal */
+        .info-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .info-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .info-modal-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            max-width: 550px;
+            width: 100%;
+            box-shadow: 0 20px 60px var(--shadow-lg);
+            transform: translateY(-50px);
+            transition: transform 0.3s ease;
+        }
+
+        .info-modal.active .info-modal-content {
+            transform: translateY(0);
+        }
+
+        .info-modal-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-modal-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .info-modal-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .info-modal-body {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 1.05rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-modal-body p {
+            margin-bottom: 1rem;
+        }
+
+        .info-modal-body strong {
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .info-modal-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .info-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .info-feature i {
+            font-size: 1.25rem;
+            color: var(--accent-blue);
+        }
+
+        .info-feature span {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+
+        .info-modal-footer {
+            display: flex;
+            justify-content: center;
+        }
+
+        .info-close-btn {
+            padding: 0.875rem 2rem;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Gilroy', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .info-close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(88, 166, 255, 0.4);
+        }
+
         /* Warning Banner */
         .warning-banner {
             background: linear-gradient(135deg, rgba(240, 136, 62, 0.15), rgba(248, 81, 73, 0.15));
@@ -188,6 +354,10 @@
             gap: 12px;
         }
 
+        .logo.hidden {
+            display: none;
+        }
+
         .logo i {
             font-size: 1.75rem;
             background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
@@ -205,12 +375,35 @@
 
         .user-info {
             display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
+            align-items: center;
+            gap: 1rem;
         }
 
         .user-info.hidden {
             display: none;
+        }
+
+        /* User Avatar with Initials */
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(88, 166, 255, 0.3);
+            border: 2px solid var(--border-color);
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
         }
 
         .user-fullname {
@@ -409,7 +602,7 @@
             box-shadow: 0 4px 12px rgba(88, 166, 255, 0.3);
         }
 
-        /* Kanban Board */
+        /* Kanban Board with SCROLL */
         .kanban-container {
             max-width: 1600px;
             margin: 0 auto;
@@ -428,9 +621,10 @@
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 1.25rem;
-            min-height: 500px;
             display: flex;
             flex-direction: column;
+            height: calc(100vh - 280px);
+            max-height: 650px;
         }
 
         .column-header {
@@ -440,6 +634,7 @@
             margin-bottom: 1.25rem;
             padding-bottom: 1rem;
             border-bottom: 2px solid var(--border-color);
+            flex-shrink: 0;
         }
 
         .column-title {
@@ -489,7 +684,35 @@
             flex-direction: column;
             gap: 1rem;
             flex: 1;
-            min-height: 200px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 0.5rem;
+        }
+
+        /* Custom Scrollbar */
+        .tasks-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .tasks-container::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        .tasks-container::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+            transition: background 0.2s ease;
+        }
+
+        .tasks-container::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-blue);
+        }
+
+        /* Firefox Scrollbar */
+        .tasks-container {
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-color) var(--bg-tertiary);
         }
 
         .task-card {
@@ -501,6 +724,7 @@
             transition: all 0.2s ease;
             position: relative;
             overflow: hidden;
+            flex-shrink: 0;
         }
 
         /* Deadline Progress Border - TOP */
@@ -510,8 +734,9 @@
             top: 0;
             left: 0;
             height: 4px;
+            width: 0%;
             background: transparent;
-            transition: all 0.5s ease;
+            transition: width 0.5s linear, background 0.3s ease;
         }
 
         .task-card.has-deadline::before {
@@ -524,12 +749,11 @@
 
         .task-card.deadline-warning::before {
             background: linear-gradient(90deg, var(--accent-orange), #FFD700);
-            animation: warningPulse 1.5s ease-in-out infinite;
         }
 
         .task-card.deadline-urgent::before {
             background: linear-gradient(90deg, var(--accent-red), var(--accent-orange));
-            animation: urgentPulse 0.8s ease-in-out infinite;
+            animation: urgentPulse 1s ease-in-out infinite;
         }
 
         .task-card.deadline-expired::before {
@@ -537,6 +761,7 @@
         }
 
         .task-card.deadline-completed::before {
+            width: 100% !important;
             background: var(--accent-green) !important;
             animation: none !important;
         }
@@ -1032,7 +1257,8 @@
             }
 
             .kanban-column {
-                min-height: auto;
+                height: auto;
+                max-height: 400px;
             }
 
             .mobile-nav {
@@ -1056,6 +1282,31 @@
             .splash-title {
                 font-size: 1.75rem;
             }
+
+            .info-fab {
+                bottom: 5rem;
+                left: 1rem;
+                width: 52px;
+                height: 52px;
+            }
+
+            .info-fab i {
+                font-size: 1.25rem;
+            }
+
+            .info-modal-content {
+                padding: 1.5rem;
+            }
+
+            .info-modal-features {
+                grid-template-columns: 1fr;
+            }
+
+            .user-avatar {
+                width: 42px;
+                height: 42px;
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
@@ -1069,17 +1320,84 @@
         <p class="splash-creator">Created by <span>Farhad Sultanov</span></p>
     </div>
 
+    <!-- Floating Info Button -->
+    <button class="info-fab" id="infoFab" onclick="openInfoModal()">
+        <i class="fas fa-info"></i>
+    </button>
+
+    <!-- Info Modal -->
+    <div class="info-modal" id="infoModal" onclick="closeInfoModalOutside(event)">
+        <div class="info-modal-content">
+            <div class="info-modal-header">
+                <div class="info-modal-icon">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <div class="info-modal-title">Task Manager</div>
+            </div>
+            <div class="info-modal-body">
+                <p>
+                    <strong>Professional tapşırıq idarəetmə sistemi</strong> - işlərinizi mükəmməl şəkildə təşkil edin və effektivliyinizi artırın!
+                </p>
+                <p>
+                    Müasir <strong>Kanban Board</strong> texnologiyası ilə tapşırıqlarınızı asanlıqla idarə edin. 
+                    Drag & Drop funksiyası, real-time deadline tracking və gamification sistemi ilə 
+                    tapşırıqlarınızı tamamlamaq daha maraqlı və motivasiyalıdır.
+                </p>
+
+                <div class="info-modal-features">
+                    <div class="info-feature">
+                        <i class="fas fa-grip-vertical"></i>
+                        <span>Drag & Drop</span>
+                    </div>
+                    <div class="info-feature">
+                        <i class="fas fa-clock"></i>
+                        <span>Real-time Deadline</span>
+                    </div>
+                    <div class="info-feature">
+                        <i class="fas fa-star"></i>
+                        <span>Xal Sistemi</span>
+                    </div>
+                    <div class="info-feature">
+                        <i class="fas fa-bell"></i>
+                        <span>Səsli Xəbərdarlıq</span>
+                    </div>
+                    <div class="info-feature">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Responsive</span>
+                    </div>
+                    <div class="info-feature">
+                        <i class="fas fa-cloud"></i>
+                        <span>Cloud Sync</span>
+                    </div>
+                </div>
+
+                <p style="margin-top: 1rem;">
+                    <strong>Giriş edin</strong> və tapşırıqlarınızı qoruma altına alın. 
+                    Firebase ilə tam təhlükəsiz və sürətli!
+                </p>
+            </div>
+            <div class="info-modal-footer">
+                <button class="info-close-btn" onclick="closeInfoModal()">
+                    <i class="fas fa-check"></i> Anladım
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Header -->
     <header class="header">
         <div class="header-content">
             <div class="header-left">
-                <div class="logo">
+                <div class="logo" id="headerLogo">
                     <i class="fas fa-grip-vertical"></i>
                     <h1>Task Manager</h1>
                 </div>
                 <div class="user-info hidden" id="userInfo">
-                    <div class="user-fullname" id="displayFullname"></div>
-                    <div class="user-username" id="displayUsername"></div>
+                    <div class="user-avatar" id="userAvatar">FS</div>
+                    <div class="user-details">
+                        <div class="user-fullname" id="displayFullname"></div>
+                        <div class="user-username" id="displayUsername"></div>
+                    </div>
                 </div>
             </div>
             <div class="header-right">
@@ -1357,7 +1675,6 @@
                 oscillator.start(audioContext.currentTime);
                 oscillator.stop(audioContext.currentTime + 0.5);
                 
-                // Second beep
                 setTimeout(() => {
                     const osc2 = audioContext.createOscillator();
                     const gain2 = audioContext.createGain();
@@ -1378,6 +1695,31 @@
             } catch (error) {
                 console.log('Audio notification failed:', error);
             }
+        }
+
+        // Info Modal Functions
+        window.openInfoModal = function() {
+            document.getElementById('infoModal').classList.add('active');
+        };
+
+        window.closeInfoModal = function() {
+            document.getElementById('infoModal').classList.remove('active');
+        };
+
+        window.closeInfoModalOutside = function(event) {
+            if (event.target.id === 'infoModal') {
+                closeInfoModal();
+            }
+        };
+
+        // Generate initials from full name
+        function getInitials(fullname) {
+            if (!fullname) return 'FS';
+            const names = fullname.trim().split(' ');
+            if (names.length === 1) {
+                return names[0].substring(0, 2).toUpperCase();
+            }
+            return (names[0][0] + names[names.length - 1][0]).toUpperCase();
         }
 
         // Generate session ID
@@ -1406,9 +1748,12 @@
             document.getElementById('userInfo').classList.remove('hidden');
             document.getElementById('pointsDisplay').classList.add('visible');
             document.getElementById('warningBanner').classList.add('hidden');
+            document.getElementById('headerLogo').classList.add('hidden');
+            document.getElementById('infoFab').classList.add('hidden');
             
             document.getElementById('displayFullname').textContent = currentUser.fullname;
             document.getElementById('displayUsername').textContent = '@' + currentUser.username;
+            document.getElementById('userAvatar').textContent = getInitials(currentUser.fullname);
             
             loadUserData();
         }
@@ -1439,6 +1784,8 @@
                 tasks = JSON.parse(sessionTasks);
                 renderAllTasks();
                 updateStats();
+                startDeadlineUpdates();
+            } else {
                 startDeadlineUpdates();
             }
         }
@@ -1511,7 +1858,6 @@
 
             await set(newUserRef, userData);
             
-            // Migrate session tasks
             if (Object.keys(tasks).length > 0) {
                 for (let taskId in tasks) {
                     const taskRef = push(ref(db, `users/${newUserRef.key}/tasks`));
@@ -1553,7 +1899,6 @@
                 return;
             }
 
-            // Migrate session tasks
             if (Object.keys(tasks).length > 0) {
                 for (let taskId in tasks) {
                     const taskRef = push(ref(db, `users/${userEntry[0]}/tasks`));
@@ -1779,7 +2124,7 @@
             editingTaskId = null;
         };
 
-        // Calculate deadline progress - FIXED
+        // Calculate deadline progress
         function calculateDeadlineProgress(task) {
             if (!task.deadline) return null;
 
@@ -1791,36 +2136,41 @@
             const timeElapsed = now - createdTime;
             const timeRemaining = deadlineTime - now;
 
-            // Calculate percentage (0-100)
-            let percentage = Math.max(0, Math.min(100, (timeElapsed / totalTime) * 100));
-
-            if (timeRemaining < 0) {
-                // Expired
+            if (task.status === 'done') {
                 return {
                     percentage: 100,
-                    timeLeft: 'Vaxt keçib',
-                    status: task.status === 'done' ? 'completed' : 'expired',
+                    timeLeft: 'Tamamlandı',
+                    status: 'completed',
                     timeRemaining: timeRemaining
                 };
             }
 
-            // Calculate time left
+            let percentage = Math.max(0, Math.min(100, (timeElapsed / totalTime) * 100));
+
+            if (timeRemaining < 0) {
+                return {
+                    percentage: 100,
+                    timeLeft: 'Vaxt keçib',
+                    status: 'expired',
+                    timeRemaining: timeRemaining
+                };
+            }
+
             const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
             const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
             let timeLeft = '';
-            if (days > 0) timeLeft = `${days}g ${hours}s`;
+            if (days > 0) timeLeft = `${days}g ${hours}s ${minutes}d`;
             else if (hours > 0) timeLeft = `${hours}s ${minutes}d`;
-            else timeLeft = `${minutes}d`;
+            else if (minutes > 0) timeLeft = `${minutes}d ${seconds}s`;
+            else timeLeft = `${seconds}s`;
 
-            // Determine status
             let status = 'normal';
-            if (task.status === 'done') {
-                status = 'completed';
-            } else if (timeRemaining < 3600000) { // < 1 hour
+            if (timeRemaining < 3600000) {
                 status = 'urgent';
-            } else if (timeRemaining < 86400000) { // < 1 day
+            } else if (timeRemaining < 86400000) {
                 status = 'warning';
             }
 
@@ -1832,7 +2182,7 @@
             };
         }
 
-        // Check for expired deadlines and notify
+        // Check for expired deadlines
         function checkExpiredDeadlines() {
             Object.entries(tasks).forEach(([taskId, task]) => {
                 if (task.deadline && task.status !== 'done') {
@@ -1843,9 +2193,41 @@
                         expiredDeadlines.add(taskId);
                         playNotificationSound();
                         showNotification(`⏰ "${task.title}" son tarixi keçdi!`, 'error');
+                        
+                        if ("Notification" in window && Notification.permission === "granted") {
+                            new Notification("Son tarix keçdi!", {
+                                body: `"${task.title}" tapşırığının son tarixi keçdi!`,
+                                icon: "https://cdn-icons-png.flaticon.com/512/2838/2838779.png"
+                            });
+                        }
                     }
                 }
             });
+        }
+
+        // Update all deadline progress bars
+        function updateAllDeadlineProgress() {
+            Object.entries(tasks).forEach(([taskId, task]) => {
+                if (task.deadline) {
+                    const progress = calculateDeadlineProgress(task);
+                    if (progress) {
+                        const taskCard = document.querySelector(`[data-task-id="${taskId}"]`);
+                        if (taskCard) {
+                            taskCard.style.setProperty('--deadline-progress', `${progress.percentage}%`);
+                            
+                            const deadlineTimeEl = taskCard.querySelector('.deadline-time');
+                            if (deadlineTimeEl) {
+                                deadlineTimeEl.textContent = progress.timeLeft;
+                                deadlineTimeEl.className = `deadline-time ${progress.status}`;
+                            }
+                            
+                            taskCard.className = `task-card has-deadline deadline-${progress.status}`;
+                        }
+                    }
+                }
+            });
+            
+            checkExpiredDeadlines();
         }
 
         // Render Tasks
@@ -1944,16 +2326,15 @@
             `;
         }
 
-        // Update deadline displays periodically
+        // Start deadline updates
         function startDeadlineUpdates() {
             if (deadlineUpdateInterval) {
                 clearInterval(deadlineUpdateInterval);
             }
             
             deadlineUpdateInterval = setInterval(() => {
-                renderAllTasks();
-                checkExpiredDeadlines();
-            }, 10000); // Update every 10 seconds
+                updateAllDeadlineProgress();
+            }, 1000);
         }
 
         // Update Stats
@@ -2026,7 +2407,6 @@
             col.addEventListener('dragleave', dragLeave);
         });
 
-        // Initialize audio context on first user interaction
         document.addEventListener('click', () => {
             if (!audioContext) {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
