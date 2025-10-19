@@ -500,6 +500,50 @@
             cursor: move;
             transition: all 0.2s ease;
             position: relative;
+            overflow: hidden;
+        }
+
+        /* Deadline Progress Border - TOP */
+        .task-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: transparent;
+            transition: all 0.5s ease;
+        }
+
+        .task-card.has-deadline::before {
+            width: var(--deadline-progress, 0%);
+        }
+
+        .task-card.deadline-normal::before {
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+        }
+
+        .task-card.deadline-warning::before {
+            background: linear-gradient(90deg, var(--accent-orange), #FFD700);
+            animation: warningPulse 1.5s ease-in-out infinite;
+        }
+
+        .task-card.deadline-urgent::before {
+            background: linear-gradient(90deg, var(--accent-red), var(--accent-orange));
+            animation: urgentPulse 0.8s ease-in-out infinite;
+        }
+
+        .task-card.deadline-expired::before {
+            background: var(--accent-red);
+        }
+
+        .task-card.deadline-completed::before {
+            background: var(--accent-green) !important;
+            animation: none !important;
+        }
+
+        @keyframes urgentPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
         }
 
         .task-card:hover {
@@ -515,7 +559,7 @@
 
         .task-priority {
             position: absolute;
-            top: 1rem;
+            top: 1.25rem;
             right: 1rem;
             padding: 0.35rem 0.75rem;
             border-radius: 6px;
@@ -549,6 +593,7 @@
             margin-bottom: 0.75rem;
             padding-right: 60px;
             line-height: 1.4;
+            margin-top: 0.25rem;
         }
 
         .task-description {
@@ -558,110 +603,41 @@
             margin-bottom: 1rem;
         }
 
-        /* Deadline Progress Bar */
-        .deadline-section {
-            margin-bottom: 1rem;
-            padding: 0.75rem;
-            background: var(--bg-main);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-
-        .deadline-header {
+        /* Deadline Info */
+        .deadline-info {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 0.5rem;
+            justify-content: space-between;
+            padding: 0.625rem 0.875rem;
+            background: var(--bg-main);
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
         }
 
         .deadline-label {
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 0.85rem;
             color: var(--text-secondary);
         }
 
         .deadline-time {
-            font-size: 0.85rem;
             font-weight: 600;
         }
 
-        .deadline-time.urgent {
+        .deadline-time.normal { color: var(--accent-blue); }
+        .deadline-time.warning { color: var(--accent-orange); }
+        .deadline-time.urgent { 
             color: var(--accent-red);
-            animation: urgentBlink 1s ease-in-out infinite;
+            animation: textBlink 1s ease-in-out infinite;
         }
+        .deadline-time.expired { color: var(--accent-red); }
+        .deadline-time.completed { color: var(--accent-green); }
 
-        @keyframes urgentBlink {
+        @keyframes textBlink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
-        }
-
-        .deadline-time.warning {
-            color: var(--accent-orange);
-        }
-
-        .deadline-time.normal {
-            color: var(--accent-blue);
-        }
-
-        .deadline-time.expired {
-            color: var(--accent-red);
-        }
-
-        .progress-bar-container {
-            width: 100%;
-            height: 6px;
-            background: var(--bg-tertiary);
-            border-radius: 3px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .progress-bar {
-            height: 100%;
-            border-radius: 3px;
-            transition: width 1s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .progress-bar.normal {
-            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
-        }
-
-        .progress-bar.warning {
-            background: linear-gradient(90deg, var(--accent-orange), #FFD700);
-        }
-
-        .progress-bar.urgent {
-            background: linear-gradient(90deg, var(--accent-red), var(--accent-orange));
-            animation: progressPulse 1s ease-in-out infinite;
-        }
-
-        .progress-bar.expired {
-            background: var(--accent-red);
-        }
-
-        @keyframes progressPulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        .progress-bar::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
         }
 
         .task-footer {
@@ -921,7 +897,7 @@
             color: var(--accent-red);
         }
 
-        /* Mobile Bottom Nav */
+        /* Mobile Nav */
         .mobile-nav {
             display: none;
             position: fixed;
@@ -1154,7 +1130,7 @@
                 <option value="medium">Orta Prioritet</option>
                 <option value="high">Yüksək Prioritet</option>
             </select>
-            <input type="datetime-local" id="taskDeadline" class="form-input">
+            <input type="datetime-local" id="taskDeadline" class="form-input" title="Son tarix (optional)">
             <button class="btn-add" onclick="addTask()">
                 <i class="fas fa-plus"></i>
                 Əlavə et
@@ -1312,7 +1288,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label>Son tarix</label>
+                <label>Son tarix (optional)</label>
                 <input type="datetime-local" id="editDeadline" class="form-input">
             </div>
             <div class="modal-footer">
@@ -1355,13 +1331,60 @@
         let draggedElement = null;
         let isAuthMode = 'login';
         let deadlineUpdateInterval = null;
+        let expiredDeadlines = new Set();
+
+        // Audio context for notification sound
+        let audioContext = null;
+        
+        function playNotificationSound() {
+            try {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 800;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.5);
+                
+                // Second beep
+                setTimeout(() => {
+                    const osc2 = audioContext.createOscillator();
+                    const gain2 = audioContext.createGain();
+                    
+                    osc2.connect(gain2);
+                    gain2.connect(audioContext.destination);
+                    
+                    osc2.frequency.value = 1000;
+                    osc2.type = 'sine';
+                    
+                    gain2.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gain2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                    
+                    osc2.start(audioContext.currentTime);
+                    osc2.stop(audioContext.currentTime + 0.5);
+                }, 200);
+                
+            } catch (error) {
+                console.log('Audio notification failed:', error);
+            }
+        }
 
         // Generate session ID
         function generateSessionId() {
             return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
         }
 
-        // Get or create session ID
         let sessionId = sessionStorage.getItem('taskManagerSession');
         if (!sessionId) {
             sessionId = generateSessionId();
@@ -1488,7 +1511,7 @@
 
             await set(newUserRef, userData);
             
-            // Migrate session tasks to user account
+            // Migrate session tasks
             if (Object.keys(tasks).length > 0) {
                 for (let taskId in tasks) {
                     const taskRef = push(ref(db, `users/${newUserRef.key}/tasks`));
@@ -1756,42 +1779,48 @@
             editingTaskId = null;
         };
 
-        // Calculate deadline progress
-        function calculateDeadlineProgress(deadline) {
-            if (!deadline) return null;
+        // Calculate deadline progress - FIXED
+        function calculateDeadlineProgress(task) {
+            if (!task.deadline) return null;
 
             const now = new Date().getTime();
-            const deadlineTime = new Date(deadline).getTime();
-            const diff = deadlineTime - now;
+            const deadlineTime = new Date(task.deadline).getTime();
+            const createdTime = new Date(task.createdAt).getTime();
+            
+            const totalTime = deadlineTime - createdTime;
+            const timeElapsed = now - createdTime;
+            const timeRemaining = deadlineTime - now;
 
-            if (diff < 0) {
+            // Calculate percentage (0-100)
+            let percentage = Math.max(0, Math.min(100, (timeElapsed / totalTime) * 100));
+
+            if (timeRemaining < 0) {
+                // Expired
                 return {
                     percentage: 100,
                     timeLeft: 'Vaxt keçib',
-                    status: 'expired',
-                    rawDiff: diff
+                    status: task.status === 'done' ? 'completed' : 'expired',
+                    timeRemaining: timeRemaining
                 };
             }
 
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            // Calculate time left
+            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
 
             let timeLeft = '';
             if (days > 0) timeLeft = `${days}g ${hours}s`;
             else if (hours > 0) timeLeft = `${hours}s ${minutes}d`;
             else timeLeft = `${minutes}d`;
 
+            // Determine status
             let status = 'normal';
-            let percentage = 0;
-
-            const totalTime = deadlineTime - new Date(tasks[Object.keys(tasks)[0]]?.createdAt || deadline).getTime();
-            const elapsed = now - new Date(tasks[Object.keys(tasks)[0]]?.createdAt || deadline).getTime();
-            percentage = Math.min(100, Math.max(0, (elapsed / totalTime) * 100));
-
-            if (diff < 3600000) { // < 1 hour
+            if (task.status === 'done') {
+                status = 'completed';
+            } else if (timeRemaining < 3600000) { // < 1 hour
                 status = 'urgent';
-            } else if (diff < 86400000) { // < 1 day
+            } else if (timeRemaining < 86400000) { // < 1 day
                 status = 'warning';
             }
 
@@ -1799,8 +1828,24 @@
                 percentage,
                 timeLeft,
                 status,
-                rawDiff: diff
+                timeRemaining
             };
+        }
+
+        // Check for expired deadlines and notify
+        function checkExpiredDeadlines() {
+            Object.entries(tasks).forEach(([taskId, task]) => {
+                if (task.deadline && task.status !== 'done') {
+                    const now = new Date().getTime();
+                    const deadlineTime = new Date(task.deadline).getTime();
+                    
+                    if (now >= deadlineTime && !expiredDeadlines.has(taskId)) {
+                        expiredDeadlines.add(taskId);
+                        playNotificationSound();
+                        showNotification(`⏰ "${task.title}" son tarixi keçdi!`, 'error');
+                    }
+                }
+            });
         }
 
         // Render Tasks
@@ -1845,22 +1890,23 @@
             };
 
             let deadlineHtml = '';
+            let deadlineClasses = '';
+            let deadlineProgress = '';
+            
             if (task.deadline) {
-                const progress = calculateDeadlineProgress(task.deadline);
+                const progress = calculateDeadlineProgress(task);
                 if (progress) {
+                    deadlineClasses = `has-deadline deadline-${progress.status}`;
+                    deadlineProgress = `style="--deadline-progress: ${progress.percentage}%"`;
+                    
                     deadlineHtml = `
-                        <div class="deadline-section">
-                            <div class="deadline-header">
-                                <div class="deadline-label">
-                                    <i class="fas fa-clock"></i>
-                                    Son tarix
-                                </div>
-                                <div class="deadline-time ${progress.status}">
-                                    ${progress.timeLeft}
-                                </div>
+                        <div class="deadline-info">
+                            <div class="deadline-label">
+                                <i class="fas fa-clock"></i>
+                                Son tarix
                             </div>
-                            <div class="progress-bar-container">
-                                <div class="progress-bar ${progress.status}" style="width: ${progress.percentage}%"></div>
+                            <div class="deadline-time ${progress.status}">
+                                ${progress.timeLeft}
                             </div>
                         </div>
                     `;
@@ -1868,7 +1914,8 @@
             }
 
             return `
-                <div class="task-card" 
+                <div class="task-card ${deadlineClasses}" 
+                     ${deadlineProgress}
                      draggable="true" 
                      data-task-id="${id}"
                      ondragstart="drag(event)"
@@ -1905,7 +1952,8 @@
             
             deadlineUpdateInterval = setInterval(() => {
                 renderAllTasks();
-            }, 60000); // Update every minute
+                checkExpiredDeadlines();
+            }, 10000); // Update every 10 seconds
         }
 
         // Update Stats
@@ -1946,7 +1994,7 @@
 
             setTimeout(() => {
                 notification.classList.remove('show');
-            }, 3000);
+            }, 4000);
         }
 
         window.scrollToColumn = function(status) {
@@ -1977,6 +2025,13 @@
         document.querySelectorAll('.kanban-column').forEach(col => {
             col.addEventListener('dragleave', dragLeave);
         });
+
+        // Initialize audio context on first user interaction
+        document.addEventListener('click', () => {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }, { once: true });
     </script>
 </body>
 </html>
