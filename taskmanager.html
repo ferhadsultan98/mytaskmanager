@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager by Farhad Sultanov</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/gilroy-bold');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-main: #0D1117;
+            --bg-secondary: #161B22;
+            --bg-tertiary: #21262D;
+            --border-color: #30363D;
+            --text-primary: #E6EDF3;
+            --text-secondary: #8B949E;
+            --accent-blue: #58A6FF;
+            --accent-green: #3FB950;
+            --accent-purple: #A371F7;
+            --accent-orange: #F0883E;
+            --accent-red: #F85149;
+            --shadow-sm: rgba(0, 0, 0, 0.2);
+            --shadow-md: rgba(0, 0, 0, 0.4);
+            --shadow-lg: rgba(0, 0, 0, 0.6);
+        }
+
+        body {
+            font-family: 'Gilroy', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo i {
+            font-size: 1.75rem;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.5rem 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .stat-item i {
+            font-size: 1.1rem;
+        }
+
+        .stat-item.todo i { color: var(--accent-orange); }
+        .stat-item.progress i { color: var(--accent-blue); }
+        .stat-item.done i { color: var(--accent-green); }
+
+        /* Add Task Section */
+        .add-task-container {
+            max-width: 1600px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .add-task-form {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 2fr 3fr 1fr auto;
+            gap: 1rem;
+            box-shadow: 0 4px 12px var(--shadow-sm);
+        }
+
+        .form-input {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: var(--text-primary);
+            font-family: 'Gilroy', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            background: var(--bg-main);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        select.form-input {
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Gilroy', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: var(--accent-blue);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #4895E8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(88, 166, 255, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* Kanban Board */
+        .kanban-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 2rem 2rem;
+        }
+
+        .kanban-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .kanban-column {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .column-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .column-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .column-title i {
+            font-size: 1.25rem;
+        }
+
+        .column-badge {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .column-todo .column-title i { color: var(--accent-orange); }
+        .column-todo .column-badge { 
+            background: rgba(240, 136, 62, 0.15);
+            color: var(--accent-orange);
+            border-color: var(--accent-orange);
+        }
+
+        .column-progress .column-title i { color: var(--accent-blue); }
+        .column-progress .column-badge { 
+            background: rgba(88, 166, 255, 0.15);
+            color: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+
+        .column-done .column-title i { color: var(--accent-green); }
+        .column-done .column-badge { 
+            background: rgba(63, 185, 80, 0.15);
+            color: var(--accent-green);
+            border-color: var(--accent-green);
+        }
+
+        .tasks-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            flex: 1;
+            min-height: 200px;
+        }
+
+        .task-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.25rem;
+            cursor: move;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .task-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--shadow-md);
+            border-color: var(--accent-blue);
+        }
+
+        .task-card.dragging {
+            opacity: 0.5;
+            transform: rotate(2deg);
+        }
+
+        .task-card.drag-over {
+            border: 2px dashed var(--accent-blue);
+            background: var(--bg-main);
+        }
+
+        .task-priority {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .priority-low {
+            background: rgba(63, 185, 80, 0.2);
+            color: var(--accent-green);
+            border: 1px solid var(--accent-green);
+        }
+
+        .priority-medium {
+            background: rgba(240, 136, 62, 0.2);
+            color: var(--accent-orange);
+            border: 1px solid var(--accent-orange);
+        }
+
+        .priority-high {
+            background: rgba(248, 81, 73, 0.2);
+            color: var(--accent-red);
+            border: 1px solid var(--accent-red);
+        }
+
+        .task-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            padding-right: 60px;
+            line-height: 1.4;
+        }
+
+        .task-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .task-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .task-date {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.1);
+            border-color: var(--accent-blue);
+            color: var(--text-primary);
+        }
+
+        .action-btn.delete:hover {
+            border-color: var(--accent-red);
+            background: rgba(248, 81, 73, 0.1);
+            color: var(--accent-red);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .empty-state p {
+            font-size: 0.9rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px var(--shadow-lg);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+        }
+
+        .close-btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .close-btn:hover {
+            background: var(--accent-red);
+            border-color: var(--accent-red);
+            transform: rotate(90deg);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-group .form-input {
+            width: 100%;
+        }
+
+        textarea.form-input {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-main);
+            border-color: var(--accent-blue);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 5rem;
+            right: 2rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px var(--shadow-md);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transform: translateX(400px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            min-width: 280px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-left: 3px solid var(--accent-green);
+        }
+
+        .notification.error {
+            border-left: 3px solid var(--accent-red);
+        }
+
+        .notification i {
+            font-size: 1.5rem;
+        }
+
+        .notification.success i {
+            color: var(--accent-green);
+        }
+
+        .notification.error i {
+            color: var(--accent-red);
+        }
+
+        /* Mobile Bottom Nav */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 0.75rem;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+        }
+
+        .mobile-nav-items {
+            display: flex;
+            justify-content: space-around;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .mobile-nav-item i {
+            font-size: 1.5rem;
+        }
+
+        .mobile-nav-item span {
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .mobile-nav-item:hover {
+            color: var(--text-primary);
+            background: var(--bg-tertiary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .kanban-board {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .add-task-form {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .add-task-form .form-input:nth-child(2) {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .logo h1 {
+                font-size: 1.25rem;
+            }
+
+            .header-stats {
+                gap: 0.75rem;
+            }
+
+            .stat-item {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.8rem;
+            }
+
+            .add-task-container {
+                padding: 0 1rem;
+                margin: 1.5rem auto;
+            }
+
+            .add-task-form {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+
+            .kanban-container {
+                padding: 0 1rem 6rem;
+            }
+
+            .kanban-board {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .kanban-column {
+                min-height: auto;
+            }
+
+            .mobile-nav {
+                display: block;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+            }
+
+            .notification {
+                top: 4rem;
+                right: 1rem;
+                left: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .task-title {
+                font-size: 1rem;
+            }
+
+            .task-description {
+                font-size: 0.85rem;
+            }
+
+            .header-stats {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-blue);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-grip-vertical"></i>
+                <h1>My Task Manager</h1>
+            </div>
+            <div class="header-stats">
+                <div class="stat-item todo">
+                    <i class="fas fa-circle"></i>
+                    <span id="todoCount">0</span>
+                </div>
+                <div class="stat-item progress">
+                    <i class="fas fa-circle-half-stroke"></i>
+                    <span id="progressCount">0</span>
+                </div>
+                <div class="stat-item done">
+                    <i class="fas fa-circle-check"></i>
+                    <span id="doneCount">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Add Task -->
+    <div class="add-task-container">
+        <div class="add-task-form">
+            <input type="text" id="taskTitle" class="form-input" placeholder="Tapşırıq başlığı">
+            <input type="text" id="taskDesc" class="form-input" placeholder="Tapşırıq təsviri">
+            <select id="taskPriority" class="form-input">
+                <option value="low">Aşağı Prioritet</option>
+                <option value="medium">Orta Prioritet</option>
+                <option value="high">Yüksək Prioritet</option>
+            </select>
+            <button class="btn btn-primary" onclick="addTask()">
+                <i class="fas fa-plus"></i>
+                Əlavə et
+            </button>
+        </div>
+    </div>
+
+    <!-- Kanban Board -->
+    <div class="kanban-container">
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Yüklənir...</p>
+        </div>
+        
+        <div class="kanban-board" id="kanbanBoard">
+            <!-- To Do Column -->
+            <div class="kanban-column column-todo" data-status="todo" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <div class="column-header">
+                    <div class="column-title">
+                        <i class="fas fa-circle"></i>
+                        Ediləcək
+                    </div>
+                    <span class="column-badge" id="todoBadge">0</span>
+                </div>
+                <div class="tasks-container" id="todoTasks">
+                    <div class="empty-state">
+                        <i class="fas fa-clipboard-list"></i>
+                        <p>Hələ tapşırıq yoxdur</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- In Progress Column -->
+            <div class="kanban-column column-progress" data-status="progress" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <div class="column-header">
+                    <div class="column-title">
+                        <i class="fas fa-circle-half-stroke"></i>
+                        Davam edir
+                    </div>
+                    <span class="column-badge" id="progressBadge">0</span>
+                </div>
+                <div class="tasks-container" id="progressTasks">
+                    <div class="empty-state">
+                        <i class="fas fa-spinner"></i>
+                        <p>Hələ tapşırıq yoxdur</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Done Column -->
+            <div class="kanban-column column-done" data-status="done" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <div class="column-header">
+                    <div class="column-title">
+                        <i class="fas fa-circle-check"></i>
+                        Tamamlandı
+                    </div>
+                    <span class="column-badge" id="doneBadge">0</span>
+                </div>
+                <div class="tasks-container" id="doneTasks">
+                    <div class="empty-state">
+                        <i class="fas fa-check-double"></i>
+                        <p>Hələ tapşırıq yoxdur</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="mobile-nav">
+        <div class="mobile-nav-items">
+            <div class="mobile-nav-item" onclick="scrollToColumn('todo')">
+                <i class="fas fa-circle"></i>
+                <span>Ediləcək</span>
+            </div>
+            <div class="mobile-nav-item" onclick="scrollToColumn('progress')">
+                <i class="fas fa-spinner"></i>
+                <span>Davam edir</span>
+            </div>
+            <div class="mobile-nav-item" onclick="scrollToColumn('done')">
+                <i class="fas fa-check"></i>
+                <span>Bitdi</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Edit Modal -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Tapşırığı Redaktə et</h2>
+                <button class="close-btn" onclick="closeEditModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="form-group">
+                <label>Başlıq</label>
+                <input type="text" id="editTitle" class="form-input">
+            </div>
+            <div class="form-group">
+                <label>Təsvir</label>
+                <textarea id="editDesc" class="form-input"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Prioritet</label>
+                <select id="editPriority" class="form-input">
+                    <option value="low">Aşağı</option>
+                    <option value="medium">Orta</option>
+                    <option value="high">Yüksək</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeEditModal()">Ləğv et</button>
+                <button class="btn btn-primary" onclick="saveEdit()">
+                    <i class="fas fa-save"></i>
+                    Yadda saxla
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationText"></span>
+    </div>
+
+    <!-- Firebase & App Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, set, push, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCyZyYwXkh7CFbNeNbAr4n3QnjCQoGWSOg",
+            authDomain: "mytaskmanager-fee7a.firebaseapp.com",
+            databaseURL: "https://mytaskmanager-fee7a-default-rtdb.firebaseio.com",
+            projectId: "mytaskmanager-fee7a",
+            storageBucket: "mytaskmanager-fee7a.firebasestorage.app",
+            messagingSenderId: "900378247881",
+            appId: "1:900378247881:web:97089d1c379bbaf7080318",
+            measurementId: "G-GJWS1QG2PF"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const tasksRef = ref(db, 'sultanov-taskmanager');
+
+        let tasks = {};
+        let editingTaskId = null;
+        let draggedElement = null;
+
+        // Load tasks from Firebase
+        onValue(tasksRef, (snapshot) => {
+            document.getElementById('loading').style.display = 'none';
+            tasks = snapshot.val() || {};
+            renderAllTasks();
+            updateStats();
+        });
+
+        // Add Task
+        window.addTask = function() {
+            const title = document.getElementById('taskTitle').value.trim();
+            const description = document.getElementById('taskDesc').value.trim();
+            const priority = document.getElementById('taskPriority').value;
+
+            if (!title) {
+                showNotification('Tapşırıq başlığı daxil edin!', 'error');
+                return;
+            }
+
+            const newTaskRef = push(tasksRef);
+            const task = {
+                title: title,
+                description: description,
+                priority: priority,
+                status: 'todo',
+                createdAt: new Date().toISOString()
+            };
+
+            set(newTaskRef, task).then(() => {
+                document.getElementById('taskTitle').value = '';
+                document.getElementById('taskDesc').value = '';
+                document.getElementById('taskPriority').value = 'low';
+                showNotification('Tapşırıq əlavə edildi!', 'success');
+            });
+        };
+
+        // Drag and Drop Functions
+        window.allowDrop = function(event) {
+            event.preventDefault();
+            const column = event.currentTarget;
+            column.style.background = 'rgba(88, 166, 255, 0.05)';
+        };
+
+        window.drag = function(event) {
+            draggedElement = event.target;
+            event.target.classList.add('dragging');
+        };
+
+        window.drop = function(event) {
+            event.preventDefault();
+            const column = event.currentTarget;
+            column.style.background = '';
+
+            if (!draggedElement) return;
+
+            const newStatus = column.dataset.status;
+            const taskId = draggedElement.dataset.taskId;
+
+            if (taskId && tasks[taskId]) {
+                update(ref(db, `sultanov-taskmanager/${taskId}`), {
+                    status: newStatus
+                }).then(() => {
+                    showNotification('Tapşırıq köçürüldü!', 'success');
+                });
+            }
+
+            draggedElement.classList.remove('dragging');
+            draggedElement = null;
+        };
+
+        window.dragEnd = function(event) {
+            event.target.classList.remove('dragging');
+            const columns = document.querySelectorAll('.kanban-column');
+            columns.forEach(col => col.style.background = '');
+        };
+
+        window.dragLeave = function(event) {
+            if (event.currentTarget === event.target) {
+                event.currentTarget.style.background = '';
+            }
+        };
+
+        // Delete Task
+        window.deleteTask = function(taskId) {
+            if (confirm('Bu tapşırığı silmək istədiyinizdən əminsiniz?')) {
+                remove(ref(db, `sultanov-taskmanager/${taskId}`)).then(() => {
+                    showNotification('Tapşırıq silindi!', 'success');
+                });
+            }
+        };
+
+        // Edit Task
+        window.editTask = function(taskId) {
+            editingTaskId = taskId;
+            const task = tasks[taskId];
+            
+            document.getElementById('editTitle').value = task.title;
+            document.getElementById('editDesc').value = task.description;
+            document.getElementById('editPriority').value = task.priority;
+            
+            document.getElementById('editModal').classList.add('active');
+        };
+
+        window.saveEdit = function() {
+            const title = document.getElementById('editTitle').value.trim();
+            const description = document.getElementById('editDesc').value.trim();
+            const priority = document.getElementById('editPriority').value;
+
+            if (!title) {
+                showNotification('Başlıq daxil edin!', 'error');
+                return;
+            }
+
+            update(ref(db, `sultanov-taskmanager/${editingTaskId}`), {
+                title: title,
+                description: description,
+                priority: priority
+            }).then(() => {
+                closeEditModal();
+                showNotification('Tapşırıq yeniləndi!', 'success');
+            });
+        };
+
+        window.closeEditModal = function() {
+            document.getElementById('editModal').classList.remove('active');
+            editingTaskId = null;
+        };
+
+        // Render All Tasks
+        function renderAllTasks() {
+            const statuses = ['todo', 'progress', 'done'];
+            
+            statuses.forEach(status => {
+                const container = document.getElementById(`${status}Tasks`);
+                const filteredTasks = Object.entries(tasks).filter(([id, task]) => task.status === status);
+                
+                if (filteredTasks.length === 0) {
+                    const emptyIcons = {
+                        todo: 'fa-clipboard-list',
+                        progress: 'fa-spinner',
+                        done: 'fa-check-double'
+                    };
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas ${emptyIcons[status]}"></i>
+                            <p>Hələ tapşırıq yoxdur</p>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = filteredTasks.map(([id, task]) => createTaskCard(id, task)).join('');
+                }
+
+                document.getElementById(`${status}Badge`).textContent = filteredTasks.length;
+            });
+        }
+
+        function createTaskCard(id, task) {
+            const date = new Date(task.createdAt);
+            const formattedDate = date.toLocaleDateString('az-AZ', { 
+                day: 'numeric', 
+                month: 'short'
+            });
+
+            const priorityLabels = {
+                low: 'Aşağı',
+                medium: 'Orta',
+                high: 'Yüksək'
+            };
+
+            return `
+                <div class="task-card" 
+                     draggable="true" 
+                     data-task-id="${id}"
+                     ondragstart="drag(event)"
+                     ondragend="dragEnd(event)">
+                    <span class="task-priority priority-${task.priority}">
+                        ${priorityLabels[task.priority]}
+                    </span>
+                    <h3 class="task-title">${task.title}</h3>
+                    <p class="task-description">${task.description || 'Təsvir yoxdur'}</p>
+                    <div class="task-footer">
+                        <div class="task-date">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>${formattedDate}</span>
+                        </div>
+                        <div class="task-actions">
+                            <button class="action-btn" onclick="editTask('${id}')" title="Redaktə et">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn delete" onclick="deleteTask('${id}')" title="Sil">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Update Stats
+        function updateStats() {
+            const statusCounts = {
+                todo: 0,
+                progress: 0,
+                done: 0
+            };
+
+            Object.values(tasks).forEach(task => {
+                if (statusCounts.hasOwnProperty(task.status)) {
+                    statusCounts[task.status]++;
+                }
+            });
+
+            document.getElementById('todoCount').textContent = statusCounts.todo;
+            document.getElementById('progressCount').textContent = statusCounts.progress;
+            document.getElementById('doneCount').textContent = statusCounts.done;
+        }
+
+        // Show Notification
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            const icon = notification.querySelector('i');
+
+            notificationText.textContent = message;
+            notification.className = `notification ${type}`;
+            
+            if (type === 'success') {
+                icon.className = 'fas fa-check-circle';
+            } else {
+                icon.className = 'fas fa-exclamation-circle';
+            }
+
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Mobile scroll to column
+        window.scrollToColumn = function(status) {
+            const column = document.querySelector(`[data-status="${status}"]`);
+            if (column) {
+                column.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        };
+
+        // Close modal on outside click
+        document.getElementById('editModal').addEventListener('click', (e) => {
+            if (e.target.id === 'editModal') {
+                closeEditModal();
+            }
+        });
+
+        // Enter key to add task
+        document.getElementById('taskTitle').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        });
+
+        // Add drag leave to columns
+        document.querySelectorAll('.kanban-column').forEach(col => {
+            col.addEventListener('dragleave', dragLeave);
+        });
+
+        // Show loading initially
+        document.getElementById('loading').style.display = 'block';
+    </script>
+</body>
+</html>
