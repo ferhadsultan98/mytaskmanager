@@ -27,6 +27,7 @@
             --accent-orange: #F0883E;
             --accent-red: #F85149;
             --accent-gold: #FFD700;
+            --telegram-blue: #0088cc;
             --shadow-sm: rgba(0, 0, 0, 0.2);
             --shadow-md: rgba(0, 0, 0, 0.4);
             --shadow-lg: rgba(0, 0, 0, 0.6);
@@ -114,11 +115,18 @@
             font-weight: 700;
         }
 
-        /* Floating Info Button */
-        .info-fab {
+        /* Floating Action Buttons */
+        .fab-container {
             position: fixed;
             bottom: 2rem;
             left: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 999;
+        }
+
+        .info-fab, .features-fab {
             width: 60px;
             height: 60px;
             background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
@@ -128,22 +136,35 @@
             justify-content: center;
             cursor: pointer;
             box-shadow: 0 8px 24px rgba(88, 166, 255, 0.4);
-            z-index: 999;
             transition: all 0.3s ease;
             border: none;
         }
 
-        .info-fab:hover {
+        .features-fab {
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-red));
+            box-shadow: 0 8px 24px rgba(240, 136, 62, 0.4);
+        }
+
+        .info-fab:hover, .features-fab:hover {
             transform: scale(1.1) rotate(90deg);
             box-shadow: 0 12px 32px rgba(88, 166, 255, 0.6);
         }
 
-        .info-fab i {
+        .features-fab:hover {
+            box-shadow: 0 12px 32px rgba(240, 136, 62, 0.6);
+        }
+
+        .info-fab i, .features-fab i {
             font-size: 1.5rem;
             color: #fff;
         }
 
-        .info-fab.hidden {
+        .fab-container.logged-in .info-fab,
+        .fab-container.logged-in .features-fab {
+            display: flex;
+        }
+
+        .fab-container:not(.logged-in) .features-fab {
             display: none;
         }
 
@@ -180,10 +201,26 @@
             box-shadow: 0 20px 60px var(--shadow-lg);
             transform: translateY(-50px);
             transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .info-modal.active .info-modal-content {
             transform: translateY(0);
+        }
+
+        .info-modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .info-modal-content::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        .info-modal-content::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
         }
 
         .info-modal-header {
@@ -252,6 +289,10 @@
             color: var(--accent-blue);
         }
 
+        .info-feature.telegram i {
+            color: var(--telegram-blue);
+        }
+
         .info-feature span {
             font-size: 0.9rem;
             color: var(--text-primary);
@@ -278,6 +319,308 @@
         .info-close-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(88, 166, 255, 0.4);
+        }
+
+        /* Features Modal - Telegram */
+        .features-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .features-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .features-modal-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            max-width: 600px;
+            width: 100%;
+            height: 90vh;
+            overflow-y: scroll;
+            box-shadow: 0 20px 60px var(--shadow-lg);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .features-modal.active .features-modal-content {
+            transform: scale(1);
+        }
+
+        .features-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .features-modal-title-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .telegram-icon-large {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #0088cc, #00a8e8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(0, 136, 204, 0.4);
+        }
+
+        .features-modal-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .modal-close-btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close-btn:hover {
+            background: var(--accent-red);
+            border-color: var(--accent-red);
+            transform: rotate(90deg);
+        }
+
+        .telegram-info-box {
+            background: linear-gradient(135deg, rgba(0, 136, 204, 0.1), rgba(0, 168, 232, 0.05));
+            border: 1px solid rgba(0, 136, 204, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .telegram-info-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--telegram-blue);
+            margin-bottom: 1rem;
+        }
+
+        .telegram-info-steps {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .telegram-info-steps li {
+            counter-increment: step-counter;
+            position: relative;
+            padding-left: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .telegram-info-steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 28px;
+            height: 28px;
+            background: var(--telegram-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .telegram-info-steps li strong {
+            color: var(--text-primary);
+        }
+
+        .telegram-info-steps li code {
+            background: var(--bg-tertiary);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            color: var(--accent-blue);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .telegram-chat-id-section {
+            margin: 1.5rem 0;
+        }
+
+        .telegram-chat-id-label {
+            display: block;
+            margin-bottom: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .telegram-chat-id-input {
+            width: 100%;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.875rem 1rem;
+            color: var(--text-primary);
+            font-family: 'Gilroy', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .telegram-chat-id-input:focus {
+            outline: none;
+            border-color: var(--telegram-blue);
+            background: var(--bg-main);
+        }
+
+        .telegram-chat-id-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .telegram-benefits {
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+        }
+
+        .telegram-benefits-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .telegram-benefits-title i {
+            color: var(--accent-green);
+        }
+
+        .telegram-benefits-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .telegram-benefits-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .telegram-benefits-list li i {
+            color: var(--telegram-blue);
+            font-size: 0.85rem;
+        }
+
+        .coming-soon-section {
+            background: linear-gradient(135deg, rgba(163, 113, 247, 0.1), rgba(88, 166, 255, 0.05));
+            border: 1px solid rgba(163, 113, 247, 0.3);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .coming-soon-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .coming-soon-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .telegram-save-btn {
+            width: 100%;
+            padding: 0.875rem 1.5rem;
+            background: linear-gradient(135deg, #0088cc, #00a8e8);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Gilroy', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .telegram-save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 136, 204, 0.4);
+        }
+
+        .telegram-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .telegram-status.active {
+            background: rgba(63, 185, 80, 0.15);
+            color: var(--accent-green);
+            border: 1px solid var(--accent-green);
+        }
+
+        .telegram-status.inactive {
+            background: rgba(139, 148, 158, 0.15);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
         }
 
         /* Warning Banner */
@@ -383,7 +726,6 @@
             display: none;
         }
 
-        /* User Avatar with Initials */
         .user-avatar {
             width: 48px;
             height: 48px;
@@ -689,7 +1031,6 @@
             padding-right: 0.5rem;
         }
 
-        /* Custom Scrollbar */
         .tasks-container::-webkit-scrollbar {
             width: 8px;
         }
@@ -709,7 +1050,6 @@
             background: var(--accent-blue);
         }
 
-        /* Firefox Scrollbar */
         .tasks-container {
             scrollbar-width: thin;
             scrollbar-color: var(--border-color) var(--bg-tertiary);
@@ -727,7 +1067,6 @@
             flex-shrink: 0;
         }
 
-        /* Deadline Progress Border - TOP */
         .task-card::before {
             content: '';
             position: absolute;
@@ -828,7 +1167,6 @@
             margin-bottom: 1rem;
         }
 
-        /* Deadline Info */
         .deadline-info {
             display: flex;
             align-items: center;
@@ -913,7 +1251,6 @@
             color: var(--accent-red);
         }
 
-        /* Empty State */
         .empty-state {
             text-align: center;
             padding: 3rem 1rem;
@@ -1283,18 +1620,21 @@
                 font-size: 1.75rem;
             }
 
-            .info-fab {
+            .fab-container {
                 bottom: 5rem;
                 left: 1rem;
+            }
+
+            .info-fab, .features-fab {
                 width: 52px;
                 height: 52px;
             }
 
-            .info-fab i {
+            .info-fab i, .features-fab i {
                 font-size: 1.25rem;
             }
 
-            .info-modal-content {
+            .info-modal-content, .features-modal-content {
                 padding: 1.5rem;
             }
 
@@ -1306,6 +1646,10 @@
                 width: 42px;
                 height: 42px;
                 font-size: 1rem;
+            }
+
+            .telegram-info-steps li {
+                font-size: 0.85rem;
             }
         }
     </style>
@@ -1320,10 +1664,15 @@
         <p class="splash-creator">Created by <span>Farhad Sultanov</span></p>
     </div>
 
-    <!-- Floating Info Button -->
-    <button class="info-fab" id="infoFab" onclick="openInfoModal()">
-        <i class="fas fa-info"></i>
-    </button>
+    <!-- Floating Action Buttons -->
+    <div class="fab-container" id="fabContainer">
+        <button class="info-fab" onclick="openInfoModal()">
+            <i class="fas fa-info"></i>
+        </button>
+        <button class="features-fab" onclick="openFeaturesModal()">
+            <i class="fas fa-cog"></i>
+        </button>
+    </div>
 
     <!-- Info Modal -->
     <div class="info-modal" id="infoModal" onclick="closeInfoModalOutside(event)">
@@ -1361,9 +1710,9 @@
                         <i class="fas fa-bell"></i>
                         <span>Səsli Xəbərdarlıq</span>
                     </div>
-                    <div class="info-feature">
-                        <i class="fas fa-mobile-alt"></i>
-                        <span>Responsive</span>
+                    <div class="info-feature telegram">
+                        <i class="fab fa-telegram"></i>
+                        <span>Telegram Bildirişləri</span>
                     </div>
                     <div class="info-feature">
                         <i class="fas fa-cloud"></i>
@@ -1372,6 +1721,11 @@
                 </div>
 
                 <p style="margin-top: 1rem;">
+                    <strong>Telegram Bildirişləri</strong> - Tapşırıqlarınız haqqında Telegram-da real-time məlumat alın! 
+                    Deadline yaxınlaşdıqda, task tamamlandıqda və gündəlik hesabatları əldə edin.
+                </p>
+
+                <p>
                     <strong>Giriş edin</strong> və tapşırıqlarınızı qoruma altına alın. 
                     Firebase ilə tam təhlükəsiz və sürətli!
                 </p>
@@ -1380,6 +1734,93 @@
                 <button class="info-close-btn" onclick="closeInfoModal()">
                     <i class="fas fa-check"></i> Anladım
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Modal - Telegram -->
+    <div class="features-modal" id="featuresModal" onclick="closeFeaturesModalOutside(event)">
+        <div class="features-modal-content">
+            <div class="features-modal-header">
+                <div class="features-modal-title-container">
+                    <div class="telegram-icon-large">
+                        <i class="fab fa-telegram"></i>
+                    </div>
+                    <div class="features-modal-title">Xüsusiyyətlər</div>
+                </div>
+                <button class="modal-close-btn" onclick="closeFeaturesModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="telegram-info-box">
+                <div class="telegram-info-title">
+                    <i class="fab fa-telegram"></i>
+                    Telegram Bildirişlərini Aktivləşdirin
+                </div>
+                <ul class="telegram-info-steps">
+                    <li>Telegram-da <strong><code>@userinfobot</code></strong> botunu açın</li>
+                    <li><strong>/start</strong> yazaraq botu başladın</li>
+                    <li>Bot sizə <strong>Chat ID</strong> nömrəsini göndərəcək</li>
+                    <li>Bu nömrəni aşağıdakı xanaya daxil edin</li>
+                </ul>
+            </div>
+
+            <div class="telegram-chat-id-section">
+                <label class="telegram-chat-id-label">
+                    <i class="fas fa-hashtag"></i> Telegram Chat ID
+                </label>
+                <input 
+                    type="text" 
+                    id="telegramChatId" 
+                    class="telegram-chat-id-input" 
+                    placeholder="Məsələn: 123456789"
+                >
+            </div>
+
+            <div class="telegram-benefits">
+                <div class="telegram-benefits-title">
+                    <i class="fas fa-check-circle"></i>
+                    Nə bildirişlər alacaqsınız?
+                </div>
+                <ul class="telegram-benefits-list">
+                    <li>
+                        <i class="fas fa-clock"></i>
+                        Deadline yaxınlaşdıqda xəbərdarlıq
+                    </li>
+                    <li>
+                        <i class="fas fa-check"></i>
+                        Tapşırıq tamamlandıqda təbrik mesajı
+                    </li>
+                    <li>
+                        <i class="fas fa-chart-line"></i>
+                        Gündəlik progress hesabatı
+                    </li>
+                    <li>
+                        <i class="fas fa-fire"></i>
+                        Motivasiya və xatırlatmalar
+                    </li>
+                </ul>
+            </div>
+
+            <button class="telegram-save-btn" onclick="saveTelegramSettings()">
+                <i class="fab fa-telegram"></i>
+                Telegram Bildirişlərini Aktivləşdir
+            </button>
+
+            <div class="telegram-status inactive" id="telegramStatus">
+                <i class="fas fa-circle"></i>
+                Telegram bildirişləri deaktiv
+            </div>
+
+            <div class="coming-soon-section">
+                <div class="coming-soon-title">
+                    <i class="fas fa-rocket"></i> Tezliklə Yeni Xüsusiyyətlər
+                </div>
+                <p class="coming-soon-text">
+                    E-mail bildirişləri, Whatsapp inteqrasiyası, AI-powered task təklifləri, 
+                    komanda üçün collaboration tools və daha çoxu tezliklə əlavə olunacaq!
+                </p>
             </div>
         </div>
     </div>
@@ -1643,6 +2084,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
+        const TELEGRAM_BOT_TOKEN = '7776707741:AAHbTy4eIGVApTNwvgTXgzDsLfclyzdHnMI';
         let currentUser = null;
         let tasks = {};
         let editingTaskId = null;
@@ -1650,8 +2092,10 @@
         let isAuthMode = 'login';
         let deadlineUpdateInterval = null;
         let expiredDeadlines = new Set();
+        let telegramChatId = null;
+        let notifiedTasks = new Set();
+        let dailyReportSent = false;
 
-        // Audio context for notification sound
         let audioContext = null;
         
         function playNotificationSound() {
@@ -1697,7 +2141,123 @@
             }
         }
 
-        // Info Modal Functions
+        // Telegram Functions
+        async function sendTelegramMessage(message) {
+            if (!telegramChatId) return;
+
+            try {
+                const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+                await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: telegramChatId,
+                        text: message,
+                        parse_mode: 'HTML'
+                    })
+                });
+            } catch (error) {
+                console.log('Telegram notification failed:', error);
+            }
+        }
+
+        async function sendDailyReport() {
+            const now = new Date();
+            const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+            
+            const completedToday = Object.values(tasks).filter(task => {
+                if (task.status !== 'done') return false;
+                const taskDate = new Date(task.createdAt).getTime();
+                return taskDate >= todayStart;
+            });
+
+            const totalCompleted = completedToday.length;
+            const highPriority = completedToday.filter(t => t.priority === 'high').length;
+            const mediumPriority = completedToday.filter(t => t.priority === 'medium').length;
+            const lowPriority = completedToday.filter(t => t.priority === 'low').length;
+
+            const todoCount = Object.values(tasks).filter(t => t.status === 'todo').length;
+            const progressCount = Object.values(tasks).filter(t => t.status === 'progress').length;
+
+            const message = `
+📊 <b>Gündəlik Hesabat - ${now.toLocaleDateString('az-AZ')}</b>
+
+✅ Tamamlanan: ${totalCompleted} tapşırıq
+   🔴 Yüksək: ${highPriority}
+   🟡 Orta: ${mediumPriority}
+   🟢 Aşağı: ${lowPriority}
+
+📋 Aktiv Tapşırıqlar:
+   ⏳ Ediləcək: ${todoCount}
+   🔄 Davam edir: ${progressCount}
+
+${totalCompleted > 0 ? '🎉 Əla iş! Davam edin!' : '💪 Sabah daha yaxşı olacaq!'}
+            `;
+
+            await sendTelegramMessage(message.trim());
+        }
+
+        function checkDailyReport() {
+            const now = new Date();
+            const hours = now.getHours();
+            
+            // Send daily report at 23:00 (11 PM)
+            if (hours === 23 && !dailyReportSent) {
+                sendDailyReport();
+                dailyReportSent = true;
+            } else if (hours !== 23) {
+                dailyReportSent = false;
+            }
+        }
+
+        window.saveTelegramSettings = async function() {
+            const chatId = document.getElementById('telegramChatId').value.trim();
+            
+            if (!chatId) {
+                showNotification('Chat ID daxil edin!', 'error');
+                return;
+            }
+
+            if (!currentUser) {
+                showNotification('Əvvəlcə giriş edin!', 'error');
+                return;
+            }
+
+            try {
+                // Test message
+                const testUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+                const testResponse = await fetch(testUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: '✅ Task Manager bildirişləri uğurla aktivləşdirildi!\n\n🎯 Siz indi tapşırıqlarınız haqqında real-time məlumat alacaqsınız.'
+                    })
+                });
+
+                if (!testResponse.ok) {
+                    throw new Error('Invalid chat ID');
+                }
+
+                await update(ref(db, `users/${currentUser.id}`), {
+                    telegramChatId: chatId
+                });
+
+                telegramChatId = chatId;
+                
+                document.getElementById('telegramStatus').className = 'telegram-status active';
+                document.getElementById('telegramStatus').innerHTML = '<i class="fas fa-circle"></i> Telegram bildirişləri aktiv';
+                
+                showNotification('Telegram bildirişləri aktivləşdirildi!', 'success');
+                closeFeaturesModal();
+            } catch (error) {
+                showNotification('Yanlış Chat ID! @userinfobot ilə yoxlayın.', 'error');
+            }
+        };
+
+        // Modal Functions
         window.openInfoModal = function() {
             document.getElementById('infoModal').classList.add('active');
         };
@@ -1712,7 +2272,27 @@
             }
         };
 
-        // Generate initials from full name
+        window.openFeaturesModal = function() {
+            if (!currentUser) {
+                showNotification('Əvvəlcə giriş edin!', 'error');
+                return;
+            }
+            document.getElementById('featuresModal').classList.add('active');
+            if (telegramChatId) {
+                document.getElementById('telegramChatId').value = telegramChatId;
+            }
+        };
+
+        window.closeFeaturesModal = function() {
+            document.getElementById('featuresModal').classList.remove('active');
+        };
+
+        window.closeFeaturesModalOutside = function(event) {
+            if (event.target.id === 'featuresModal') {
+                closeFeaturesModal();
+            }
+        };
+
         function getInitials(fullname) {
             if (!fullname) return 'FS';
             const names = fullname.trim().split(' ');
@@ -1722,7 +2302,6 @@
             return (names[0][0] + names[names.length - 1][0]).toUpperCase();
         }
 
-        // Generate session ID
         function generateSessionId() {
             return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
         }
@@ -1733,7 +2312,6 @@
             sessionStorage.setItem('taskManagerSession', sessionId);
         }
 
-        // Check logged in user
         const savedUser = localStorage.getItem('taskManagerUser');
         if (savedUser) {
             currentUser = JSON.parse(savedUser);
@@ -1749,7 +2327,7 @@
             document.getElementById('pointsDisplay').classList.add('visible');
             document.getElementById('warningBanner').classList.add('hidden');
             document.getElementById('headerLogo').classList.add('hidden');
-            document.getElementById('infoFab').classList.add('hidden');
+            document.getElementById('fabContainer').classList.add('logged-in');
             
             document.getElementById('displayFullname').textContent = currentUser.fullname;
             document.getElementById('displayUsername').textContent = '@' + currentUser.username;
@@ -1767,6 +2345,12 @@
                     const userData = snapshot.val();
                     document.getElementById('pointsValue').textContent = userData.points || 0;
                     currentUser.points = userData.points || 0;
+                    
+                    if (userData.telegramChatId) {
+                        telegramChatId = userData.telegramChatId;
+                        document.getElementById('telegramStatus').className = 'telegram-status active';
+                        document.getElementById('telegramStatus').innerHTML = '<i class="fas fa-circle"></i> Telegram bildirişləri aktiv';
+                    }
                 }
             });
 
@@ -1796,7 +2380,6 @@
             }
         }
 
-        // Auth Modal
         window.openAuthModal = function() {
             document.getElementById('authModal').classList.add('active');
         };
@@ -1819,7 +2402,6 @@
             }
         };
 
-        // Register
         window.register = async function() {
             const username = document.getElementById('registerUsername').value.trim();
             const fullname = document.getElementById('registerFullname').value.trim();
@@ -1874,7 +2456,6 @@
             updateUIForLoggedInUser();
         };
 
-        // Login
         window.login = async function() {
             const password = document.getElementById('loginPassword').value;
 
@@ -1915,7 +2496,6 @@
             updateUIForLoggedInUser();
         };
 
-        // Logout
         window.logout = function() {
             if (confirm('Çıxış etmək istədiyinizdən əminsiniz?')) {
                 localStorage.removeItem('taskManagerUser');
@@ -1924,7 +2504,6 @@
             }
         };
 
-        // Add Task
         window.addTask = function() {
             const title = document.getElementById('taskTitle').value.trim();
             const description = document.getElementById('taskDesc').value.trim();
@@ -1970,7 +2549,6 @@
             document.getElementById('taskDeadline').value = '';
         }
 
-        // Drag and Drop
         window.allowDrop = function(event) {
             event.preventDefault();
             const column = event.currentTarget;
@@ -1999,6 +2577,17 @@
                         status: newStatus
                     }).then(() => {
                         handlePointsUpdate(taskId, oldStatus, newStatus);
+                        if (newStatus === 'done' && oldStatus !== 'done') {
+                            const task = tasks[taskId];
+                            sendTelegramMessage(`
+🎉 <b>Tapşırıq Tamamlandı!</b>
+
+✅ ${task.title}
+${task.description ? `📝 ${task.description}` : ''}
+
+💪 Əla iş! Davam edin!
+                            `.trim());
+                        }
                     });
                 } else {
                     tasks[taskId].status = newStatus;
@@ -2047,7 +2636,6 @@
             }
         }
 
-        // Delete Task
         window.deleteTask = function(taskId) {
             if (confirm('Bu tapşırığı silmək istədiyinizdən əminsiniz?')) {
                 const task = tasks[taskId];
@@ -2073,7 +2661,6 @@
             }
         };
 
-        // Edit Task
         window.editTask = function(taskId) {
             editingTaskId = taskId;
             const task = tasks[taskId];
@@ -2124,7 +2711,6 @@
             editingTaskId = null;
         };
 
-        // Calculate deadline progress
         function calculateDeadlineProgress(task) {
             if (!task.deadline) return null;
 
@@ -2182,17 +2768,42 @@
             };
         }
 
-        // Check for expired deadlines
         function checkExpiredDeadlines() {
             Object.entries(tasks).forEach(([taskId, task]) => {
                 if (task.deadline && task.status !== 'done') {
                     const now = new Date().getTime();
                     const deadlineTime = new Date(task.deadline).getTime();
+                    const timeRemaining = deadlineTime - now;
                     
+                    // Notify 1 hour before deadline
+                    if (timeRemaining > 0 && timeRemaining < 3600000 && !notifiedTasks.has(taskId + '_1hour')) {
+                        notifiedTasks.add(taskId + '_1hour');
+                        sendTelegramMessage(`
+⏰ <b>Xəbərdarlıq!</b>
+
+⚠️ "${task.title}" tapşırığının son tarixinə 1 saat qalıb!
+
+📌 Prioritet: ${task.priority === 'high' ? '🔴 Yüksək' : task.priority === 'medium' ? '🟡 Orta' : '🟢 Aşağı'}
+${task.description ? `📝 ${task.description}` : ''}
+
+💪 Tələsin!
+                        `.trim());
+                    }
+                    
+                    // Notify when expired
                     if (now >= deadlineTime && !expiredDeadlines.has(taskId)) {
                         expiredDeadlines.add(taskId);
                         playNotificationSound();
                         showNotification(`⏰ "${task.title}" son tarixi keçdi!`, 'error');
+                        
+                        sendTelegramMessage(`
+🚨 <b>Son Tarix Keçdi!</b>
+
+❌ "${task.title}"
+
+📌 Bu tapşırıq vaxtında tamamlanmadı.
+🔄 Statusu yenidən nəzərdən keçirin.
+                        `.trim());
                         
                         if ("Notification" in window && Notification.permission === "granted") {
                             new Notification("Son tarix keçdi!", {
@@ -2205,7 +2816,6 @@
             });
         }
 
-        // Update all deadline progress bars
         function updateAllDeadlineProgress() {
             Object.entries(tasks).forEach(([taskId, task]) => {
                 if (task.deadline) {
@@ -2228,9 +2838,11 @@
             });
             
             checkExpiredDeadlines();
+            checkDailyReport();
         }
 
-        // Render Tasks
+     // (Əvvəlki script hissəsindən davam edir - renderAllTasks funksiyasından)
+
         function renderAllTasks() {
             const statuses = ['todo', 'progress', 'done'];
             
@@ -2326,7 +2938,6 @@
             `;
         }
 
-        // Start deadline updates
         function startDeadlineUpdates() {
             if (deadlineUpdateInterval) {
                 clearInterval(deadlineUpdateInterval);
@@ -2337,7 +2948,6 @@
             }, 1000);
         }
 
-        // Update Stats
         function updateStats() {
             const statusCounts = {
                 todo: 0,
@@ -2356,7 +2966,6 @@
             document.getElementById('doneCount').textContent = statusCounts.done;
         }
 
-        // Notification
         function showNotification(message, type = 'success') {
             const notification = document.getElementById('notification');
             const notificationText = document.getElementById('notificationText');
