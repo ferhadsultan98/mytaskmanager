@@ -41,7 +41,6 @@
             min-height: 100vh;
         }
 
-        /* Splash Screen */
         .splash-screen {
             position: fixed;
             top: 0;
@@ -115,7 +114,6 @@
             font-weight: 700;
         }
 
-        /* Floating Action Buttons */
         .fab-container {
             position: fixed;
             bottom: 2rem;
@@ -168,7 +166,6 @@
             display: none;
         }
 
-        /* Info Modal */
         .info-modal {
             position: fixed;
             top: 0;
@@ -321,7 +318,6 @@
             box-shadow: 0 8px 24px rgba(88, 166, 255, 0.4);
         }
 
-        /* Features Modal - Telegram */
         .features-modal {
             position: fixed;
             top: 0;
@@ -351,15 +347,29 @@
             padding: 2.5rem;
             max-width: 600px;
             width: 100%;
-            height: 90vh;
-            overflow-y: scroll;
             box-shadow: 0 20px 60px var(--shadow-lg);
             transform: scale(0.9);
             transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .features-modal.active .features-modal-content {
             transform: scale(1);
+        }
+
+        .features-modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .features-modal-content::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        .features-modal-content::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
         }
 
         .features-modal-header {
@@ -623,7 +633,6 @@
             border: 1px solid var(--border-color);
         }
 
-        /* Warning Banner */
         .warning-banner {
             background: linear-gradient(135deg, rgba(240, 136, 62, 0.15), rgba(248, 81, 73, 0.15));
             border: 1px solid var(--accent-orange);
@@ -666,7 +675,6 @@
             color: var(--accent-orange);
         }
 
-        /* Header */
         .header {
             background: var(--bg-secondary);
             border-bottom: 1px solid var(--border-color);
@@ -874,7 +882,6 @@
             color: #fff;
         }
 
-        /* Add Task Section */
         .add-task-container {
             max-width: 1600px;
             margin: 2rem auto;
@@ -944,7 +951,6 @@
             box-shadow: 0 4px 12px rgba(88, 166, 255, 0.3);
         }
 
-        /* Kanban Board with SCROLL */
         .kanban-container {
             max-width: 1600px;
             margin: 0 auto;
@@ -1263,7 +1269,6 @@
             opacity: 0.3;
         }
 
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -1416,7 +1421,6 @@
             text-decoration: underline;
         }
 
-        /* Notification */
         .notification {
             position: fixed;
             top: 5rem;
@@ -1459,7 +1463,6 @@
             color: var(--accent-red);
         }
 
-        /* Mobile Nav */
         .mobile-nav {
             display: none;
             position: fixed;
@@ -1500,7 +1503,6 @@
             font-weight: 600;
         }
 
-        /* Loading */
         .loading {
             text-align: center;
             padding: 3rem;
@@ -1521,7 +1523,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Responsive */
         @media (max-width: 1200px) {
             .kanban-board {
                 grid-template-columns: repeat(2, 1fr);
@@ -1655,7 +1656,6 @@
     </style>
 </head>
 <body>
-    <!-- Splash Screen -->
     <div class="splash-screen" id="splashScreen">
         <div class="splash-logo">
             <i class="fas fa-tasks"></i>
@@ -1664,7 +1664,6 @@
         <p class="splash-creator">Created by <span>Farhad Sultanov</span></p>
     </div>
 
-    <!-- Floating Action Buttons -->
     <div class="fab-container" id="fabContainer">
         <button class="info-fab" onclick="openInfoModal()">
             <i class="fas fa-info"></i>
@@ -1674,7 +1673,6 @@
         </button>
     </div>
 
-    <!-- Info Modal -->
     <div class="info-modal" id="infoModal" onclick="closeInfoModalOutside(event)">
         <div class="info-modal-content">
             <div class="info-modal-header">
@@ -1738,7 +1736,6 @@
         </div>
     </div>
 
-    <!-- Features Modal - Telegram -->
     <div class="features-modal" id="featuresModal" onclick="closeFeaturesModalOutside(event)">
         <div class="features-modal-content">
             <div class="features-modal-header">
@@ -1794,7 +1791,7 @@
                     </li>
                     <li>
                         <i class="fas fa-chart-line"></i>
-                        Gündəlik progress hesabatı
+                        Gündəlik progress hesabatı (23:00)
                     </li>
                     <li>
                         <i class="fas fa-fire"></i>
@@ -1825,7 +1822,6 @@
         </div>
     </div>
 
-    <!-- Header -->
     <header class="header">
         <div class="header-content">
             <div class="header-left">
@@ -1872,7 +1868,6 @@
         </div>
     </header>
 
-    <!-- Warning Banner -->
     <div class="add-task-container">
         <div class="warning-banner" id="warningBanner">
             <i class="fas fa-exclamation-triangle warning-icon"></i>
@@ -1897,7 +1892,6 @@
         </div>
     </div>
 
-    <!-- Kanban Board -->
     <div class="kanban-container">
         <div id="loading" class="loading" style="display: none;">
             <div class="spinner"></div>
@@ -1955,7 +1949,6 @@
         </div>
     </div>
 
-    <!-- Mobile Nav -->
     <nav class="mobile-nav">
         <div class="mobile-nav-items">
             <div class="mobile-nav-item" onclick="scrollToColumn('todo')">
@@ -1973,7 +1966,6 @@
         </div>
     </nav>
 
-    <!-- Auth Modal -->
     <div class="modal" id="authModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -2021,7 +2013,6 @@
         </div>
     </div>
 
-    <!-- Edit Modal -->
     <div class="modal" id="editModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -2060,7 +2051,6 @@
         </div>
     </div>
 
-    <!-- Notification -->
     <div class="notification" id="notification">
         <i class="fas fa-check-circle"></i>
         <span id="notificationText"></span>
@@ -2093,9 +2083,10 @@
         let deadlineUpdateInterval = null;
         let expiredDeadlines = new Set();
         let telegramChatId = null;
+        let telegramEnabled = false;
         let notifiedTasks = new Set();
-        let dailyReportSent = false;
-
+        let lastDailyReportDate = null;
+        let sentMessages = new Set();
         let audioContext = null;
         
         function playNotificationSound() {
@@ -2141,13 +2132,18 @@
             }
         }
 
-        // Telegram Functions
         async function sendTelegramMessage(message) {
-            if (!telegramChatId) return;
+            if (!telegramChatId || !telegramEnabled) return;
+
+            const messageHash = `${telegramChatId}_${message.substring(0, 50)}`;
+            if (sentMessages.has(messageHash)) {
+                console.log('Duplicate message prevented');
+                return;
+            }
 
             try {
                 const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-                await fetch(url, {
+                const response = await fetch(url, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -2158,13 +2154,31 @@
                         parse_mode: 'HTML'
                     })
                 });
+
+                if (response.ok) {
+                    sentMessages.add(messageHash);
+                    setTimeout(() => {
+                        sentMessages.delete(messageHash);
+                    }, 60000);
+                }
             } catch (error) {
                 console.log('Telegram notification failed:', error);
             }
         }
 
         async function sendDailyReport() {
+            if (Object.keys(tasks).length === 0) {
+                console.log('No tasks - skipping daily report');
+                return;
+            }
+
             const now = new Date();
+            const todayDate = now.toDateString();
+
+            if (lastDailyReportDate === todayDate) {
+                return;
+            }
+
             const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
             
             const completedToday = Object.values(tasks).filter(task => {
@@ -2197,18 +2211,24 @@ ${totalCompleted > 0 ? '🎉 Əla iş! Davam edin!' : '💪 Sabah daha yaxşı o
             `;
 
             await sendTelegramMessage(message.trim());
+            lastDailyReportDate = todayDate;
+            
+            if (currentUser) {
+                await update(ref(db, `users/${currentUser.id}`), {
+                    lastDailyReport: todayDate
+                });
+            }
         }
 
         function checkDailyReport() {
+            if (!telegramEnabled) return;
+
             const now = new Date();
             const hours = now.getHours();
+            const minutes = now.getMinutes();
             
-            // Send daily report at 23:00 (11 PM)
-            if (hours === 23 && !dailyReportSent) {
+            if (hours === 23 && minutes === 0) {
                 sendDailyReport();
-                dailyReportSent = true;
-            } else if (hours !== 23) {
-                dailyReportSent = false;
             }
         }
 
@@ -2226,7 +2246,6 @@ ${totalCompleted > 0 ? '🎉 Əla iş! Davam edin!' : '💪 Sabah daha yaxşı o
             }
 
             try {
-                // Test message
                 const testUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
                 const testResponse = await fetch(testUrl, {
                     method: 'POST',
@@ -2242,22 +2261,73 @@ ${totalCompleted > 0 ? '🎉 Əla iş! Davam edin!' : '💪 Sabah daha yaxşı o
                 }
 
                 await update(ref(db, `users/${currentUser.id}`), {
-                    telegramChatId: chatId
+                    telegramChatId: chatId,
+                    telegramEnabled: true
                 });
 
                 telegramChatId = chatId;
+                telegramEnabled = true;
+                sentMessages.clear();
                 
                 document.getElementById('telegramStatus').className = 'telegram-status active';
                 document.getElementById('telegramStatus').innerHTML = '<i class="fas fa-circle"></i> Telegram bildirişləri aktiv';
                 
+                const saveBtn = document.querySelector('.telegram-save-btn');
+                saveBtn.innerHTML = '<i class="fab fa-telegram"></i> Bildirişlər Aktiv';
+                saveBtn.style.background = 'linear-gradient(135deg, var(--accent-green), #00d084)';
+                
+                let deactivateBtn = document.getElementById('telegramDeactivateBtn');
+                if (!deactivateBtn) {
+                    deactivateBtn = document.createElement('button');
+                    deactivateBtn.id = 'telegramDeactivateBtn';
+                    deactivateBtn.className = 'telegram-save-btn';
+                    deactivateBtn.style.background = 'linear-gradient(135deg, var(--accent-red), #d03030)';
+                    deactivateBtn.style.marginTop = '0.75rem';
+                    deactivateBtn.innerHTML = '<i class="fas fa-times-circle"></i> Bildirişləri Deaktiv Et';
+                    deactivateBtn.onclick = deactivateTelegram;
+                    saveBtn.parentNode.insertBefore(deactivateBtn, saveBtn.nextSibling);
+                }
+                
                 showNotification('Telegram bildirişləri aktivləşdirildi!', 'success');
-                closeFeaturesModal();
             } catch (error) {
                 showNotification('Yanlış Chat ID! @userinfobot ilə yoxlayın.', 'error');
             }
         };
 
-        // Modal Functions
+        window.deactivateTelegram = async function() {
+            if (!confirm('Telegram bildirişlərini deaktiv etmək istədiyinizdən əminsiniz?')) {
+                return;
+            }
+
+            if (!currentUser) return;
+
+            try {
+                await update(ref(db, `users/${currentUser.id}`), {
+                    telegramEnabled: false
+                });
+
+                telegramEnabled = false;
+                sentMessages.clear();
+                notifiedTasks.clear();
+                
+                document.getElementById('telegramStatus').className = 'telegram-status inactive';
+                document.getElementById('telegramStatus').innerHTML = '<i class="fas fa-circle"></i> Telegram bildirişləri deaktiv';
+                
+                const saveBtn = document.querySelector('.telegram-save-btn');
+                saveBtn.innerHTML = '<i class="fab fa-telegram"></i> Telegram Bildirişlərini Aktivləşdir';
+                saveBtn.style.background = 'linear-gradient(135deg, #0088cc, #00a8e8)';
+                
+                const deactivateBtn = document.getElementById('telegramDeactivateBtn');
+                if (deactivateBtn) {
+                    deactivateBtn.remove();
+                }
+                
+                showNotification('Telegram bildirişləri deaktiv edildi!', 'success');
+            } catch (error) {
+                showNotification('Xəta baş verdi!', 'error');
+            }
+        };
+
         window.openInfoModal = function() {
             document.getElementById('infoModal').classList.add('active');
         };
@@ -2348,8 +2418,13 @@ ${totalCompleted > 0 ? '🎉 Əla iş! Davam edin!' : '💪 Sabah daha yaxşı o
                     
                     if (userData.telegramChatId) {
                         telegramChatId = userData.telegramChatId;
-                        document.getElementById('telegramStatus').className = 'telegram-status active';
-                        document.getElementById('telegramStatus').innerHTML = '<i class="fas fa-circle"></i> Telegram bildirişləri aktiv';
+                        telegramEnabled = userData.telegramEnabled !== false;
+                        lastDailyReportDate = userData.lastDailyReport || null;
+                        
+                        if (telegramEnabled) {
+                            document.getElementById('telegramStatus').className = 'telegram-status active';
+                            document.getElementById('telegramStatus').innerHTML = '<i class="fas fa-circle"></i> Telegram bildirişləri aktiv';
+                        }
                     }
                 }
             });
@@ -2768,16 +2843,16 @@ ${task.description ? `📝 ${task.description}` : ''}
             };
         }
 
-        function checkExpiredDeadlines() {
+              function checkExpiredDeadlines() {
             Object.entries(tasks).forEach(([taskId, task]) => {
                 if (task.deadline && task.status !== 'done') {
                     const now = new Date().getTime();
                     const deadlineTime = new Date(task.deadline).getTime();
                     const timeRemaining = deadlineTime - now;
                     
-                    // Notify 1 hour before deadline
-                    if (timeRemaining > 0 && timeRemaining < 3600000 && !notifiedTasks.has(taskId + '_1hour')) {
-                        notifiedTasks.add(taskId + '_1hour');
+                    const oneHourKey = `${taskId}_1hour`;
+                    if (timeRemaining > 0 && timeRemaining < 3600000 && timeRemaining > 3540000 && !notifiedTasks.has(oneHourKey)) {
+                        notifiedTasks.add(oneHourKey);
                         sendTelegramMessage(`
 ⏰ <b>Xəbərdarlıq!</b>
 
@@ -2790,7 +2865,6 @@ ${task.description ? `📝 ${task.description}` : ''}
                         `.trim());
                     }
                     
-                    // Notify when expired
                     if (now >= deadlineTime && !expiredDeadlines.has(taskId)) {
                         expiredDeadlines.add(taskId);
                         playNotificationSound();
@@ -2840,8 +2914,6 @@ ${task.description ? `📝 ${task.description}` : ''}
             checkExpiredDeadlines();
             checkDailyReport();
         }
-
-     // (Əvvəlki script hissəsindən davam edir - renderAllTasks funksiyasından)
 
         function renderAllTasks() {
             const statuses = ['todo', 'progress', 'done'];
