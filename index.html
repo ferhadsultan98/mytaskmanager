@@ -40,7 +40,378 @@
             overflow-x: hidden;
             min-height: 100vh;
         }
+ /* Notification FAB */
+        .notification-fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-red));
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(240, 136, 62, 0.4);
+            z-index: 999;
+            transition: all 0.3s ease;
+            border: none;
+            animation: notificationPulse 2s ease-in-out infinite;
+        }
 
+        @keyframes notificationPulse {
+            0%, 100% { 
+                box-shadow: 0 8px 24px rgba(240, 136, 62, 0.4);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 8px 32px rgba(240, 136, 62, 0.7);
+                transform: scale(1.05);
+            }
+        }
+
+        .notification-fab.active {
+            display: flex;
+        }
+
+        .notification-fab:hover {
+            transform: scale(1.1) !important;
+        }
+
+        .notification-fab i {
+            font-size: 1.5rem;
+            color: #fff;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--accent-red);
+            color: #fff;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border: 2px solid var(--bg-main);
+            animation: badgeBounce 0.5s ease;
+        }
+
+        @keyframes badgeBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Notification Panel */
+        .notification-panel {
+            position: fixed;
+            top: 80px;
+            right: 2rem;
+            width: 400px;
+            max-height: 600px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 20px 60px var(--shadow-lg);
+            display: none;
+            flex-direction: column;
+            z-index: 2000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .notification-panel.active {
+            display: flex;
+        }
+
+        .notification-panel-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notification-panel-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .notification-panel-title i {
+            color: var(--accent-orange);
+        }
+
+        .notification-clear-btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .notification-clear-btn:hover {
+            background: var(--accent-red);
+            border-color: var(--accent-red);
+            color: #fff;
+        }
+
+        .notification-panel-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .notification-panel-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .notification-panel-body::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        .notification-panel-body::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        .notification-item {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .notification-item:hover {
+            border-color: var(--accent-blue);
+            transform: translateX(-4px);
+        }
+
+        .notification-item.unread {
+            border-left: 4px solid var(--accent-orange);
+            background: rgba(240, 136, 62, 0.05);
+        }
+
+        .notification-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .notification-item-type {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .notification-item-type.chat {
+            color: var(--accent-blue);
+        }
+
+        .notification-item-type.points {
+            color: var(--accent-gold);
+        }
+
+        .notification-item-type.comment {
+            color: var(--accent-purple);
+        }
+
+        .notification-item-time {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .notification-item-content {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 0.5rem;
+        }
+
+        .notification-item-points {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 6px;
+            margin-top: 0.5rem;
+        }
+
+        .notification-item-points i {
+            color: var(--accent-gold);
+        }
+
+        .notification-item-points span {
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+
+        .notification-empty {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-secondary);
+        }
+
+        .notification-empty i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        /* Mini Pop-up Notification */
+        .mini-notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-blue);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            min-width: 320px;
+            max-width: 400px;
+            box-shadow: 0 8px 32px var(--shadow-lg);
+            transform: translateX(500px);
+            transition: all 0.3s ease;
+            z-index: 3000;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .mini-notification.show {
+            transform: translateX(0);
+            animation: miniNotificationSlide 0.3s ease, miniNotificationHide 0.3s ease 2.7s forwards;
+        }
+
+        @keyframes miniNotificationSlide {
+            from {
+                transform: translateX(500px);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes miniNotificationHide {
+            to {
+                transform: translateX(500px);
+                opacity: 0;
+            }
+        }
+
+        .mini-notification.chat {
+            border-left-color: var(--accent-blue);
+        }
+
+        .mini-notification.points {
+            border-left-color: var(--accent-gold);
+        }
+
+        .mini-notification.comment {
+            border-left-color: var(--accent-purple);
+        }
+
+        .mini-notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .mini-notification.chat .mini-notification-icon {
+            background: rgba(88, 166, 255, 0.15);
+            color: var(--accent-blue);
+        }
+
+        .mini-notification.points .mini-notification-icon {
+            background: rgba(255, 215, 0, 0.15);
+            color: var(--accent-gold);
+        }
+
+        .mini-notification.comment .mini-notification-icon {
+            background: rgba(163, 113, 247, 0.15);
+            color: var(--accent-purple);
+        }
+
+        .mini-notification-content {
+            flex: 1;
+        }
+
+        .mini-notification-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .mini-notification-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .mini-notification-points {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 6px;
+            font-weight: 600;
+            color: var(--accent-gold);
+        }
+
+        @media (max-width: 768px) {
+            .notification-panel {
+                right: 1rem;
+                left: 1rem;
+                width: auto;
+            }
+
+            .mini-notification {
+                right: 1rem;
+                left: 1rem;
+                min-width: auto;
+            }
+
+            .notification-fab {
+                bottom: 5rem;
+            }
+        }
         .splash-screen {
             position: fixed;
             top: 0;
@@ -2055,7 +2426,33 @@
         <i class="fas fa-check-circle"></i>
         <span id="notificationText"></span>
     </div>
+<!-- Notification FAB (Əlavə edin) -->
+    <button class="notification-fab" id="notificationFab" onclick="toggleNotificationPanel()">
+        <i class="fas fa-bell"></i>
+        <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+    </button>
 
+    <!-- Notification Panel (Əlavə edin) -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notification-panel-header">
+            <div class="notification-panel-title">
+                <i class="fas fa-bell"></i>
+                Bildirişlər
+            </div>
+            <button class="notification-clear-btn" onclick="clearAllNotifications()">
+                <i class="fas fa-trash"></i> Təmizlə
+            </button>
+        </div>
+        <div class="notification-panel-body" id="notificationPanelBody">
+            <div class="notification-empty">
+                <i class="fas fa-bell-slash"></i>
+                <p>Hələ bildiriş yoxdur</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mini Notifications Container (Əlavə edin) -->
+    <div id="miniNotificationsContainer"></div>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, set, push, onValue, update, remove, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -3093,6 +3490,286 @@ ${task.description ? `📝 ${task.description}` : ''}
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
             }
         }, { once: true });
+
+
+
+
+ let userNotifications = [];
+        let lastChatMessageId = null;
+        let lastPointsId = null;
+        let lastCommentId = null;
+
+        // Check if user logged in
+        if (currentUser) {
+            document.getElementById('notificationFab').classList.add('active');
+            loadUserNotifications();
+        }
+
+        function loadUserNotifications() {
+            if (!currentUser) return;
+
+            // Listen to chat messages
+            const chatRefs = [];
+            const usersRef = ref(db, 'users');
+            get(usersRef).then((snapshot) => {
+                const users = snapshot.val() || {};
+                Object.keys(users).forEach(userId => {
+                    if (userId !== currentUser.id) {
+                        const chatRef = ref(db, `chats/${userId}_${currentUser.id}`);
+                        onValue(chatRef, (chatSnapshot) => {
+                            const messages = chatSnapshot.val() || {};
+                            Object.entries(messages).forEach(([msgId, msg]) => {
+                                if (msg.senderId !== currentUser.id && msgId !== lastChatMessageId) {
+                                    const notificationId = `chat_${msgId}`;
+                                    if (!userNotifications.find(n => n.id === notificationId)) {
+                                        addNotification({
+                                            id: notificationId,
+                                            type: 'chat',
+                                            title: 'Yeni Mesaj',
+                                            content: msg.text,
+                                            from: msg.senderName,
+                                            timestamp: msg.timestamp,
+                                            read: false
+                                        });
+                                        
+                                        showMiniNotification({
+                                            type: 'chat',
+                                            title: 'Yeni Mesaj',
+                                            content: msg.text,
+                                            from: msg.senderName
+                                        });
+                                        
+                                        lastChatMessageId = msgId;
+                                    }
+                                }
+                            });
+                        });
+                    }
+                });
+            });
+
+            // Listen to points history
+            const pointsRef = ref(db, `users/${currentUser.id}/pointsHistory`);
+            onValue(pointsRef, (snapshot) => {
+                const history = snapshot.val() || {};
+                const entries = Object.entries(history);
+                
+                if (entries.length > 0) {
+                    const [lastId, lastEntry] = entries[entries.length - 1];
+                    
+                    if (lastId !== lastPointsId) {
+                        const notificationId = `points_${lastId}`;
+                        if (!userNotifications.find(n => n.id === notificationId)) {
+                            addNotification({
+                                id: notificationId,
+                                type: 'points',
+                                title: 'Xal Əlavə Edildi',
+                                content: lastEntry.reason || 'Xal əlavə edildi',
+                                from: lastEntry.givenBy,
+                                amount: lastEntry.amount,
+                                timestamp: lastEntry.timestamp,
+                                read: false
+                            });
+                            
+                            showMiniNotification({
+                                type: 'points',
+                                title: 'Xal Əlavə Edildi',
+                                content: lastEntry.reason || 'Xal əlavə edildi',
+                                from: lastEntry.givenBy,
+                                amount: lastEntry.amount
+                            });
+                            
+                            lastPointsId = lastId;
+                        }
+                    }
+                }
+            });
+
+            // Listen to task comments
+            const tasksRef = ref(db, `users/${currentUser.id}/tasks`);
+            onValue(tasksRef, (snapshot) => {
+                const tasks = snapshot.val() || {};
+                Object.entries(tasks).forEach(([taskId, task]) => {
+                    if (task.comments) {
+                        const comments = Object.entries(task.comments);
+                        if (comments.length > 0) {
+                            const [lastComId, lastComment] = comments[comments.length - 1];
+                            const notificationId = `comment_${taskId}_${lastComId}`;
+                            
+                            if (lastComId !== lastCommentId && !userNotifications.find(n => n.id === notificationId)) {
+                                addNotification({
+                                    id: notificationId,
+                                    type: 'comment',
+                                    title: 'Yeni Komment',
+                                    content: lastComment.text,
+                                    from: lastComment.author,
+                                    taskTitle: task.title,
+                                    timestamp: lastComment.timestamp,
+                                    read: false
+                                });
+                                
+                                showMiniNotification({
+                                    type: 'comment',
+                                    title: 'Yeni Komment',
+                                    content: lastComment.text,
+                                    from: lastComment.author,
+                                    taskTitle: task.title
+                                });
+                                
+                                lastCommentId = lastComId;
+                            }
+                        }
+                    }
+                });
+            });
+        }
+
+        function addNotification(notification) {
+            userNotifications.unshift(notification);
+            if (userNotifications.length > 50) {
+                userNotifications = userNotifications.slice(0, 50);
+            }
+            updateNotificationUI();
+        }
+
+        function showMiniNotification(data) {
+            const container = document.getElementById('miniNotificationsContainer');
+            const notification = document.createElement('div');
+            notification.className = `mini-notification ${data.type}`;
+
+            const iconMap = {
+                'chat': 'fa-comments',
+                'points': 'fa-star',
+                'comment': 'fa-comment'
+            };
+
+            notification.innerHTML = `
+                <div class="mini-notification-icon">
+                    <i class="fas ${iconMap[data.type]}"></i>
+                </div>
+                <div class="mini-notification-content">
+                    <div class="mini-notification-title">${data.title}</div>
+                    <div class="mini-notification-text">
+                        ${data.from ? `<strong>${data.from}:</strong> ` : ''}${data.content}
+                        ${data.taskTitle ? `<br><em>${data.taskTitle}</em>` : ''}
+                    </div>
+                    ${data.amount ? `
+                        <div class="mini-notification-points">
+                            <i class="fas fa-star"></i>
+                            <span>+${data.amount} xal</span>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+
+            container.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3500);
+        }
+
+        function updateNotificationUI() {
+            const unreadCount = userNotifications.filter(n => !n.read).length;
+            const badge = document.getElementById('notificationBadge');
+            const panelBody = document.getElementById('notificationPanelBody');
+
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+
+            if (userNotifications.length === 0) {
+                panelBody.innerHTML = `
+                    <div class="notification-empty">
+                        <i class="fas fa-bell-slash"></i>
+                        <p>Hələ bildiriş yoxdur</p>
+                    </div>
+                `;
+                return;
+            }
+
+            panelBody.innerHTML = userNotifications.map(notification => {
+                const time = notification.timestamp ? new Date(notification.timestamp).toLocaleTimeString('az-AZ', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }) : '';
+
+                const typeIcons = {
+                    'chat': 'fa-comments',
+                    'points': 'fa-star',
+                    'comment': 'fa-comment'
+                };
+
+                return `
+                    <div class="notification-item ${notification.read ? '' : 'unread'}" onclick="markAsRead('${notification.id}')">
+                        <div class="notification-item-header">
+                            <div class="notification-item-type ${notification.type}">
+                                <i class="fas ${typeIcons[notification.type]}"></i>
+                                ${notification.title}
+                            </div>
+                            <div class="notification-item-time">${time}</div>
+                        </div>
+                        <div class="notification-item-content">
+                            ${notification.from ? `<strong>${notification.from}:</strong> ` : ''}${notification.content}
+                            ${notification.taskTitle ? `<br><em>Tapşırıq: ${notification.taskTitle}</em>` : ''}
+                        </div>
+                        ${notification.amount ? `
+                            <div class="notification-item-points">
+                                <i class="fas fa-star"></i>
+                                <span>+${notification.amount} xal</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.toggleNotificationPanel = function() {
+            const panel = document.getElementById('notificationPanel');
+            panel.classList.toggle('active');
+
+            if (panel.classList.contains('active')) {
+                userNotifications.forEach(n => n.read = true);
+                updateNotificationUI();
+            }
+        };
+
+        window.markAsRead = function(notificationId) {
+            const notification = userNotifications.find(n => n.id === notificationId);
+            if (notification) {
+                notification.read = true;
+                updateNotificationUI();
+            }
+        };
+
+        window.clearAllNotifications = function() {
+            if (confirm('Bütün bildirişləri silmək istədiyinizdən əminsiniz?')) {
+                userNotifications = [];
+                updateNotificationUI();
+                document.getElementById('notificationPanel').classList.remove('active');
+            }
+        };
+
+        // Close panel on outside click
+        document.addEventListener('click', (e) => {
+            const panel = document.getElementById('notificationPanel');
+            const fab = document.getElementById('notificationFab');
+            
+            if (panel.classList.contains('active') && 
+                !panel.contains(e.target) && 
+                !fab.contains(e.target)) {
+                panel.classList.remove('active');
+            }
+        });
+
+
     </script>
 </body>
 </html>
